@@ -1,0 +1,136 @@
+/* ============================================================
+   页面级样式：总览 / 单位画像 / 填报 / 审核 / 治理 / 指标字典
+   ============================================================ */
+
+/* ---------- 统计卡 ---------- */
+.statgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--s3);margin-bottom:var(--s4)}
+@media (max-width:1180px){.statgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.stat{background:#fff;border:1px solid var(--border);border-radius:var(--r2);padding:var(--s3) var(--s4);box-shadow:var(--sh1);position:relative;overflow:hidden}
+.stat::after{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--brand);opacity:.9}
+.stat--hao::after{background:var(--success)} .stat--ruo::after{background:var(--danger)}
+.stat--warn::after{background:var(--warning)}
+.stat__label{font-size:11px;color:var(--t3)}
+.stat__value{font-size:24px;font-weight:700;color:var(--t1);line-height:1.25;margin-top:2px}
+.stat__value small{font-size:12px;font-weight:400;color:var(--t3);margin-left:4px}
+.stat__sub{font-size:11px;color:var(--t2);margin-top:2px}
+
+/* ---------- 总览：等级分布 ---------- */
+/* ---------- 总览：五级定级分布（整行满宽） ---------- */
+.gradestack{display:flex;height:28px;border-radius:var(--r2);overflow:hidden;margin-bottom:var(--s4)}
+.gradestack__seg{display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;font-weight:600;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 var(--s2)}
+.gradelist{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:var(--s3) var(--s4)}
+@media (max-width:1180px){.gradelist{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.gradelist__item{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--t2);
+  background:var(--bg-soft);border:1px solid var(--border);border-radius:var(--r2);padding:8px 10px}
+.gradelist__dot{width:10px;height:10px;border-radius:2px;flex:0 0 auto}
+.gradelist__name{color:var(--t1);font-weight:600}
+.gradelist__range{color:var(--t3);font-size:11px}
+.gradelist__item b{color:var(--t1);font-size:13px;margin-left:auto}
+
+/* ---------- 单位画像：总分卡 ---------- */
+.hero{background:linear-gradient(135deg,#0A75D9 0%,#1E86E2 55%,#2787E0 100%);color:#fff;border-radius:var(--r3);
+  padding:var(--s4) var(--s5);box-shadow:0 4px 14px rgba(10,117,217,.25)}
+.hero__top{display:flex;align-items:flex-start;justify-content:space-between;gap:var(--s3)}
+.hero__unit{font-size:17px;font-weight:700}
+.hero__meta{font-size:11px;color:rgba(255,255,255,.85);margin-top:4px}
+.hero__score{display:flex;align-items:baseline;gap:var(--s2);margin:var(--s3) 0 var(--s2)}
+.hero__score b{font-size:40px;font-weight:700;letter-spacing:-1px;line-height:1}
+.hero__score span{font-size:12px;color:rgba(255,255,255,.85)}
+.hero__rank{display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 10px;border-radius:12px;
+  background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.35);font-size:12px}
+.hero__comment{margin-top:var(--s3);padding-top:var(--s3);border-top:1px dashed rgba(255,255,255,.35);
+  font-size:12px;line-height:1.85;color:#fff}
+.hero__comment .lbl{color:rgba(255,255,255,.8);margin-right:6px}
+.hero__comment .auto{float:right;font-size:10px;color:rgba(255,255,255,.7)}
+
+/* ---------- 单位画像：图表 ---------- */
+.chartbox{display:flex;flex-direction:column;align-items:center;padding:var(--s3) var(--s4) var(--s2)}
+/* 图表卡与右栏（总分卡 + 维度明细）等高对齐：卡片纵向拉伸，图表区自适应并垂直居中 */
+.chartcard{display:flex;flex-direction:column}
+.chartcard .chartbox{flex:1 1 auto;justify-content:center}
+.radar-tip{font-size:11px;color:var(--t3);text-align:center;padding:0 var(--s4) var(--s3);line-height:1.7}
+.dimbars{width:100%;display:flex;flex-direction:column;gap:9px;padding:var(--s2) 0}
+.dimbar{display:flex;align-items:center;gap:var(--s2);font-size:11px}
+.dimbar__name{width:74px;text-align:right;color:var(--t1);flex:0 0 auto}
+.dimbar__track{flex:1 1 auto;height:15px;background:var(--bg);border-radius:2px;overflow:hidden}
+.dimbar__fill{height:100%;border-radius:2px}
+.dimbar__val{width:104px;flex:0 0 auto;color:var(--t2);white-space:nowrap}
+.legend{display:flex;flex-wrap:wrap;gap:var(--s3);font-size:11px;color:var(--t2);padding:0 var(--s4) var(--s3)}
+.legend__item{display:flex;align-items:center;gap:5px}
+.legend__dot{width:9px;height:9px;border-radius:2px}
+
+/* ---------- 单位画像：组织与人才 ---------- */
+.assetgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--s4)}
+@media (max-width:1180px){.assetgrid{grid-template-columns:1fr}}
+.assettext{font-size:12px;color:var(--t1);line-height:1.95}
+.assetkpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--s2);margin-top:var(--s3)}
+@media (max-width:1180px){.assetkpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.assetkpi{background:var(--bg-soft);border:1px solid var(--border);border-radius:var(--r2);padding:8px 10px}
+.assetkpi__label{font-size:11px;color:var(--t3)}
+.assetkpi__value{font-size:15px;font-weight:700;color:var(--t1);margin-top:2px}
+.assetkpi__value small{font-size:11px;font-weight:400;color:var(--t3)}
+
+/* ---------- 填报工作台 ---------- */
+.taskcard{background:linear-gradient(135deg,#0A75D9,#1E86E2);color:#fff;border-radius:var(--r3);padding:var(--s4) var(--s5);
+  display:flex;align-items:center;justify-content:space-between;gap:var(--s4);flex-wrap:wrap;margin-bottom:var(--s4)}
+.taskcard__title{font-size:15px;font-weight:600}
+.taskcard__sub{font-size:11px;color:rgba(255,255,255,.85);margin-top:5px;line-height:1.7}
+.taskcard__right{display:flex;align-items:center;gap:var(--s4);flex-wrap:wrap}
+.countdown{text-align:center}
+.countdown__num{font-size:26px;font-weight:700;line-height:1.1}
+.countdown__label{font-size:11px;color:rgba(255,255,255,.85)}
+.validlist{display:flex;flex-direction:column;gap:6px}
+.validlist__row{display:flex;align-items:flex-start;gap:8px;font-size:12px;line-height:1.6}
+.validlist__icon{width:15px;height:15px;border-radius:50%;flex:0 0 auto;margin-top:1px;color:#fff;font-size:9px;
+  display:flex;align-items:center;justify-content:center}
+.validlist__icon--pass{background:var(--success)}
+.validlist__icon--warn{background:var(--warning)}
+.validlist__icon--fail{background:var(--danger)}
+.validlist__detail{color:var(--t3)}
+
+/* ---------- 审核工作台 ---------- */
+.cmplist{display:flex;flex-direction:column;gap:0}
+.cmprow{display:flex;align-items:center;justify-content:space-between;gap:var(--s3);padding:9px 0;border-bottom:1px dashed var(--border);font-size:12px}
+.cmprow:last-child{border-bottom:0}
+.cmprow__label{color:var(--t2);flex:0 0 130px}
+.cmprow__vals{display:flex;align-items:center;gap:var(--s2);flex:1 1 auto}
+.cmprow__cur{font-weight:600;color:var(--t1)}
+.cmprow__prev{color:var(--t3)}
+.deltachip{display:inline-flex;align-items:center;height:19px;padding:0 7px;border-radius:9px;font-size:11px}
+.deltachip--up{background:#FFF7E6;color:#FA8C16;border:1px solid #FFD591}
+.deltachip--warn{background:#FFF1F0;color:#F5222D;border:1px solid #FFA39E}
+.deltachip--flat{background:var(--bg-soft);color:var(--t3);border:1px solid var(--border)}
+
+/* ---------- 治理工作台 ---------- */
+.govtabs{display:flex;gap:var(--s1);border-bottom:1px solid var(--border);margin-bottom:var(--s4);flex-wrap:wrap}
+.govtab{height:38px;padding:0 var(--s4);border:0;background:transparent;font-size:13px;color:var(--t2);position:relative;white-space:nowrap}
+.govtab:hover{color:var(--primary)}
+.govtab.is-active{color:var(--primary);font-weight:600}
+.govtab.is-active::after{content:"";position:absolute;left:var(--s4);right:var(--s4);bottom:-1px;height:2px;background:var(--primary);border-radius:1px}
+.govtab__badge{display:inline-flex;align-items:center;justify-content:center;min-width:17px;height:16px;padding:0 4px;
+  margin-left:5px;border-radius:8px;background:var(--danger);color:#fff;font-size:10px;vertical-align:1px}
+.govtab__badge--done{background:var(--success)}
+.audittable td{font-size:11px}
+.reasoncell{max-width:280px;color:var(--t2);line-height:1.6}
+.snapcard{display:flex;align-items:center;gap:var(--s4);flex-wrap:wrap}
+.snapcard__digest{font-family:Consolas,monospace;font-size:13px;color:var(--primary);font-weight:600}
+.directinput{width:74px;height:28px;padding:0 8px;border:1px solid var(--border-strong);border-radius:var(--r2);
+  font-size:12px;text-align:center;outline:none}
+.directinput:focus{border-color:var(--primary);box-shadow:0 0 0 2px rgba(24,144,255,.12)}
+.deduct{font-weight:700;color:var(--primary)}
+.deduct.is-zero{color:var(--success)}
+.deduct.is-loss{color:var(--danger)}
+
+/* ---------- 指标字典 ---------- */
+.formula{font-family:Consolas,"Courier New",monospace;font-size:11px;background:var(--bg-soft);border:1px solid var(--border);
+  border-radius:var(--r1);padding:2px 6px;color:var(--t1);white-space:nowrap}
+.weightbar{display:inline-flex;align-items:center;gap:6px}
+.weightbar__track{width:52px;height:6px;border-radius:3px;background:var(--border);overflow:hidden}
+.weightbar__fill{height:100%;background:var(--brand)}
+.versline{display:flex;gap:var(--s3);padding:var(--s3) 0;border-bottom:1px dashed var(--border);font-size:12px}
+.versline:last-child{border-bottom:0}
+.versline__ver{flex:0 0 84px;font-weight:600;color:var(--primary);font-family:Consolas,monospace}
+.versline__body{flex:1 1 auto;line-height:1.75}
+.versline__meta{flex:0 0 210px;color:var(--t3);text-align:right}
+.tagrow{display:flex;flex-wrap:wrap;gap:6px}

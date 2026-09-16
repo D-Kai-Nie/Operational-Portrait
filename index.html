@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>供应链管理画像 · 中建八局数字供应链（DSC）智慧运营</title>
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/shell.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/views.css">
+</head>
+<body>
+
+<!-- ================= 应用外壳 ================= -->
+<div class="app" id="app">
+
+  <!-- 顶部导航（与面包屑同一蓝色背景区域） -->
+  <header class="topbar" id="topbar">
+    <div class="topbar__left">
+      <a class="brand" href="javascript:;" id="brandHome">
+        <span class="brand__badge">DSC</span>
+        <span class="brand__text">中建八局数字供应链</span>
+      </a>
+      <nav class="modnav" id="modnav">
+        <a class="modnav__item" href="javascript:;" data-mod="首页">首页</a>
+        <a class="modnav__item" href="javascript:;" data-mod="智选资源">智选资源</a>
+        <a class="modnav__item" href="javascript:;" data-mod="智慧采购">智慧采购</a>
+        <a class="modnav__item" href="javascript:;" data-mod="智能物管">智能物管</a>
+        <a class="modnav__item is-active" href="javascript:;" data-mod="智慧运营">智慧运营</a>
+      </nav>
+    </div>
+    <div class="topbar__right">
+      <button class="iconbtn" id="notifyBtn" title="消息通知">
+        <svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2a4 4 0 0 1 4 4v2.5l1.5 2.5h-11L4 8.5V6a4 4 0 0 1 4-4z"/><path d="M6.5 13a1.8 1.8 0 0 0 3 0"/></svg>
+        <span class="iconbtn__badge" id="notifyBadge">4</span>
+      </button>
+      <div class="roleswitch" id="roleswitch">
+        <span class="roleswitch__label">当前角色</span>
+        <select class="roleswitch__select" id="roleSelect"></select>
+      </div>
+      <button class="userbox" id="userBox">
+        <span class="userbox__avatar" id="userAvatar">管</span>
+        <span class="userbox__name" id="userName">局总部供应链管理员</span>
+        <svg viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6l4 4 4-4"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- 面包屑（与顶部导航连成同一蓝色区域） -->
+  <div class="crumbbar">
+    <nav class="crumb" id="crumb"></nav>
+  </div>
+
+  <div class="body">
+    <!-- 左侧菜单 -->
+    <aside class="sidebar" id="sidebar">
+      <nav class="sidenav" id="sidenav"></nav>
+      <div class="sidebar__foot">
+        <div class="flowmini" id="flowMini"></div>
+        <button class="collapsebtn" id="collapseBtn" title="收起菜单">
+          <svg viewBox="0 0 16 16" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M1.5 4h13M1.5 12h13M1.5 8h13"/></svg>
+          <span class="collapsebtn__text">收起菜单</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- 内容区 -->
+    <main class="main" id="main">
+      <div id="view"></div>
+      <footer class="pagefoot">
+        原型说明 · 数据基线为 2026 年 1-6 月 21 家主业单位实测档案（已按 PRD v2.0 §11 权威校正），
+        算分口径与验收点 AC-01 ~ AC-11 已随原型内置校验，页面为前端 Mock 演示。
+      </footer>
+    </main>
+  </div>
+</div>
+
+<div id="toastWrap" class="toastwrap"></div>
+<div id="dialogRoot"></div>
+
+<script src="js/data.js"></script>
+<script src="js/engine.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/views/overview.js"></script>
+<script src="js/views/portrait.js"></script>
+<script src="js/views/fill.js"></script>
+<script src="js/views/review.js"></script>
+<script src="js/views/govern.js"></script>
+<script src="js/views/dict.js"></script>
+<script src="js/shell.js"></script>
+</body>
+</html>
