@@ -9,10 +9,10 @@
 .stat::after{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--brand);opacity:.9}
 .stat--hao::after{background:var(--success)} .stat--ruo::after{background:var(--danger)}
 .stat--warn::after{background:var(--warning)}
-.stat__label{font-size:11px;color:var(--t3)}
+.stat__label{font-size:12px;color:var(--t3)}
 .stat__value{font-size:24px;font-weight:700;color:var(--t1);line-height:1.25;margin-top:2px}
 .stat__value small{font-size:12px;font-weight:400;color:var(--t3);margin-left:4px}
-.stat__sub{font-size:11px;color:var(--t2);margin-top:2px}
+.stat__sub{font-size:12px;color:var(--t2);margin-top:2px}
 
 /* ---------- 总览：等级分布 ---------- */
 /* ---------- 总览：五级定级分布（整行满宽） ---------- */
@@ -25,7 +25,7 @@
   background:var(--bg-soft);border:1px solid var(--border);border-radius:var(--r2);padding:8px 10px}
 .gradelist__dot{width:10px;height:10px;border-radius:2px;flex:0 0 auto}
 .gradelist__name{color:var(--t1);font-weight:600}
-.gradelist__range{color:var(--t3);font-size:11px}
+.gradelist__range{color:var(--t3);font-size:12px}
 .gradelist__item b{color:var(--t1);font-size:13px;margin-left:auto}
 
 /* ---------- 单位画像：总分卡 ---------- */
@@ -33,7 +33,7 @@
   padding:var(--s4) var(--s5);box-shadow:0 4px 14px rgba(10,117,217,.25)}
 .hero__top{display:flex;align-items:flex-start;justify-content:space-between;gap:var(--s3)}
 .hero__unit{font-size:17px;font-weight:700}
-.hero__meta{font-size:11px;color:rgba(255,255,255,.85);margin-top:4px}
+.hero__meta{font-size:12px;color:rgba(255,255,255,.85);margin-top:4px}
 .hero__score{display:flex;align-items:baseline;gap:var(--s2);margin:var(--s3) 0 var(--s2)}
 .hero__score b{font-size:40px;font-weight:700;letter-spacing:-1px;line-height:1}
 .hero__score span{font-size:12px;color:rgba(255,255,255,.85)}
@@ -42,7 +42,7 @@
 .hero__comment{margin-top:var(--s3);padding-top:var(--s3);border-top:1px dashed rgba(255,255,255,.35);
   font-size:12px;line-height:1.85;color:#fff}
 .hero__comment .lbl{color:rgba(255,255,255,.8);margin-right:6px}
-.hero__comment .auto{float:right;font-size:10px;color:rgba(255,255,255,.7)}
+.hero__comment .auto{float:right;font-size:12px;color:rgba(255,255,255,.7)}
 
 /* ---------- 单位画像：图表 ---------- */
 .chartbox{display:flex;flex-direction:column;align-items:center;padding:var(--s3) var(--s4) var(--s2)}
@@ -52,14 +52,14 @@
 /* 雷达图按卡片可用区域等比放大（viewBox 不变，撑满不溢出、不留大面积留白） */
 .chartcard .chartbox svg{width:100%;height:100%;max-height:540px}
 @media (max-width:1180px){.chartcard .chartbox svg{max-height:420px}}
-.radar-tip{font-size:11px;color:var(--t3);text-align:center;padding:0 var(--s4) var(--s3);line-height:1.7}
+.radar-tip{font-size:12px;color:var(--t3);text-align:center;padding:0 var(--s4) var(--s3);line-height:1.7}
 .dimbars{width:100%;display:flex;flex-direction:column;gap:9px;padding:var(--s2) 0}
-.dimbar{display:flex;align-items:center;gap:var(--s2);font-size:11px}
+.dimbar{display:flex;align-items:center;gap:var(--s2);font-size:12px}
 .dimbar__name{width:74px;text-align:right;color:var(--t1);flex:0 0 auto}
 .dimbar__track{flex:1 1 auto;height:15px;background:var(--bg);border-radius:2px;overflow:hidden}
 .dimbar__fill{height:100%;border-radius:2px}
 .dimbar__val{width:104px;flex:0 0 auto;color:var(--t2);white-space:nowrap}
-.legend{display:flex;flex-wrap:wrap;gap:var(--s3);font-size:11px;color:var(--t2);padding:0 var(--s4) var(--s3)}
+.legend{display:flex;flex-wrap:wrap;gap:var(--s3);font-size:12px;color:var(--t2);padding:0 var(--s4) var(--s3)}
 .legend__item{display:flex;align-items:center;gap:5px}
 .legend__dot{width:9px;height:9px;border-radius:2px}
 
@@ -70,19 +70,19 @@
 .assetkpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--s2);margin-top:var(--s3)}
 @media (max-width:1180px){.assetkpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .assetkpi{background:var(--bg-soft);border:1px solid var(--border);border-radius:var(--r2);padding:8px 10px}
-.assetkpi__label{font-size:11px;color:var(--t3)}
+.assetkpi__label{font-size:12px;color:var(--t3)}
 .assetkpi__value{font-size:15px;font-weight:700;color:var(--t1);margin-top:2px}
-.assetkpi__value small{font-size:11px;font-weight:400;color:var(--t3)}
+.assetkpi__value small{font-size:12px;font-weight:400;color:var(--t3)}
 
 /* ---------- 填报工作台 ---------- */
 .taskcard{background:linear-gradient(135deg,#0A75D9,#1E86E2);color:#fff;border-radius:var(--r3);padding:var(--s4) var(--s5);
   display:flex;align-items:center;justify-content:space-between;gap:var(--s4);flex-wrap:wrap;margin-bottom:var(--s4)}
 .taskcard__title{font-size:15px;font-weight:600}
-.taskcard__sub{font-size:11px;color:rgba(255,255,255,.85);margin-top:5px;line-height:1.7}
+.taskcard__sub{font-size:12px;color:rgba(255,255,255,.85);margin-top:5px;line-height:1.7}
 .taskcard__right{display:flex;align-items:center;gap:var(--s4);flex-wrap:wrap}
 .countdown{text-align:center}
 .countdown__num{font-size:26px;font-weight:700;line-height:1.1}
-.countdown__label{font-size:11px;color:rgba(255,255,255,.85)}
+.countdown__label{font-size:12px;color:rgba(255,255,255,.85)}
 .validlist{display:flex;flex-direction:column;gap:6px}
 .validlist__row{display:flex;align-items:flex-start;gap:8px;font-size:12px;line-height:1.6}
 .validlist__icon{width:15px;height:15px;border-radius:50%;flex:0 0 auto;margin-top:1px;color:#fff;font-size:9px;
@@ -100,7 +100,7 @@
 .cmprow__vals{display:flex;align-items:center;gap:var(--s2);flex:1 1 auto}
 .cmprow__cur{font-weight:600;color:var(--t1)}
 .cmprow__prev{color:var(--t3)}
-.deltachip{display:inline-flex;align-items:center;height:19px;padding:0 7px;border-radius:9px;font-size:11px}
+.deltachip{display:inline-flex;align-items:center;height:19px;padding:0 7px;border-radius:9px;font-size:12px}
 .deltachip--up{background:#FFF7E6;color:#FA8C16;border:1px solid #FFD591}
 .deltachip--warn{background:#FFF1F0;color:#F5222D;border:1px solid #FFA39E}
 .deltachip--flat{background:var(--bg-soft);color:var(--t3);border:1px solid var(--border)}
@@ -112,9 +112,9 @@
 .govtab.is-active{color:var(--primary);font-weight:600}
 .govtab.is-active::after{content:"";position:absolute;left:var(--s4);right:var(--s4);bottom:-1px;height:2px;background:var(--primary);border-radius:1px}
 .govtab__badge{display:inline-flex;align-items:center;justify-content:center;min-width:17px;height:16px;padding:0 4px;
-  margin-left:5px;border-radius:8px;background:var(--danger);color:#fff;font-size:10px;vertical-align:1px}
+  margin-left:5px;border-radius:8px;background:var(--danger);color:#fff;font-size:12px;vertical-align:1px}
 .govtab__badge--done{background:var(--success)}
-.audittable td{font-size:11px}
+.audittable td{font-size:12px}
 .reasoncell{max-width:280px;color:var(--t2);line-height:1.6}
 .snapcard{display:flex;align-items:center;gap:var(--s4);flex-wrap:wrap}
 .snapcard__digest{font-family:Consolas,monospace;font-size:13px;color:var(--primary);font-weight:600}
@@ -126,7 +126,7 @@
 .deduct.is-loss{color:var(--danger)}
 
 /* ---------- 指标字典 ---------- */
-.formula{font-family:Consolas,"Courier New",monospace;font-size:11px;background:var(--bg-soft);border:1px solid var(--border);
+.formula{font-family:Consolas,"Courier New",monospace;font-size:12px;background:var(--bg-soft);border:1px solid var(--border);
   border-radius:var(--r1);padding:2px 6px;color:var(--t1);white-space:nowrap}
 .weightbar{display:inline-flex;align-items:center;gap:6px}
 .weightbar__track{width:52px;height:6px;border-radius:3px;background:var(--border);overflow:hidden}
@@ -137,3 +137,57 @@
 .versline__body{flex:1 1 auto;line-height:1.75}
 .versline__meta{flex:0 0 210px;color:var(--t3);text-align:right}
 .tagrow{display:flex;flex-wrap:wrap;gap:6px}
+
+/* ============================================================
+   UX 评审优化批次（P0/P1/P2）
+   ============================================================ */
+
+/* ---------- P2 #1 统计卡内迷你五级分布条（结论前置） ---------- */
+.minigrade{display:flex;height:6px;border-radius:3px;overflow:hidden;margin-top:8px;background:var(--bg)}
+.minigrade__seg{height:100%}
+
+/* ---------- P1 #2 单位画像整体评价块（提升视觉权重） ---------- */
+.hero__comment{
+  margin-top:var(--s3);padding:10px 0 0 var(--s3);
+  border-top:1px dashed rgba(255,255,255,.35);
+  border-left:3px solid rgba(255,255,255,.9);
+  font-size:13px;line-height:1.95;color:#fff;position:relative;float:none;
+}
+.hero__comment .lbl{display:block;color:rgba(255,255,255,.85);font-size:12px;margin-bottom:2px;margin-right:0}
+.hero__comment .auto{
+  position:absolute;right:0;top:10px;float:none;font-size:12px;color:rgba(255,255,255,.75);
+}
+
+/* ---------- P1 #13 数值右对齐（金额/分值/数量），排名与标识符保持居中 ---------- */
+.table td.num,.table th.num{text-align:right}
+.table td.num .cell__sub{text-align:right}
+.table--sticky td.num{text-align:right}
+
+/* ---------- P2 #25 后三名符号冗余编码（不依赖颜色；前三名已有奖牌，不重复编码） ---------- */
+.cell--bot3::after{content:" ▽";font-size:12px;opacity:.7}
+
+/* ---------- P2 #3 治理页签步骤序号 ---------- */
+.govtab__step{
+  display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;margin-right:5px;
+  border-radius:50%;background:var(--bg);color:var(--t2);font-size:12px;vertical-align:-2px;
+}
+.govtab.is-active .govtab__step{background:var(--primary);color:#fff}
+
+/* ---------- P2 #4 指标字典维度分组 ---------- */
+.dictgroup{margin:var(--s3) 0 var(--s3)}
+.dictgroup__title{
+  display:flex;align-items:center;gap:var(--s2);font-size:13px;font-weight:600;color:var(--t1);
+  padding:6px 0;border-bottom:1px solid var(--border);margin-bottom:var(--s2);
+}
+.dictgroup__sum{margin-left:auto;font-size:12px;font-weight:400;color:var(--t3)}
+
+/* ---------- P2 #19 关键操作持久标识 ---------- */
+.opstate{
+  display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 10px;border-radius:12px;
+  background:var(--bg-soft);border:1px solid var(--border);font-size:12px;color:var(--t2);
+}
+.opstate--ok{background:#F6FFED;border-color:#B7EB8F;color:#389E0D}
+
+/* ---------- P2 #14 正常态状态标签（替代通栏横幅） ---------- */
+.pagehead__title .statetag{margin-left:var(--s2);vertical-align:3px}
+

@@ -138,7 +138,7 @@
           '<td>' + U.esc(u.name) + '</td>' +
           '<td class="ctr cell__main">' + U.num(u.total) + '</td>' +
           '<td class="ctr">' + U.gradeTag(u.grade) + '</td>' +
-          dims.map(function (d, i) { return '<td class="ctr">' + U.num(u.dimScores[i]) + '</td>'; }).join('') +
+          dims.map(function (d, i) { return '<td class="num">' + U.num(u.dimScores[i]) + '</td>'; }).join('') +
           '<td class="ctr"><button class="btn--link" data-fix="' + U.esc(u.name) + '">修正</button></td></tr>';
       }).join('') + '</tbody></table></div>' +
       '<div class="card__foot">' +
@@ -191,20 +191,22 @@
     title: '画像治理',
     render: function (App) {
       var tabs = [
-        { key: 'direct', label: '合规扣分直填', badge: '' },
-        { key: 'final', label: '终审与算分', badge: App.state.bureau.stage === 'REVIEW' ? '!' : '' },
-        { key: 'review', label: '预发布复核与发布', badge: '' },
-        { key: 'audit', label: '修正审计日志', badge: String(App.state.audit.length) }
+        { key: 'direct', label: '合规扣分直填', step: 1, badge: '' },
+        { key: 'final', label: '终审与算分', step: 2, badge: App.state.bureau.stage === 'REVIEW' ? '!' : '' },
+        { key: 'review', label: '预发布复核与发布', step: 3, badge: '' },
+        { key: 'audit', label: '修正审计日志', step: null, badge: String(App.state.audit.length) }
       ];
       var cur = App.state.govTab;
       return '<div class="pagehead">' +
-        '<div><div class="pagehead__title">画像治理工作台 · 局总部供应链管理部</div>' +
-        '<div class="pagehead__desc">权威直填 → 终审算分 → 预发布复核 → 正式定版发布；所有人工干预强制留痕，' +
+        '<div><div class="pagehead__title">画像治理工作台 · 局总部供应链管理部' +
+        '<span class="statetag">' + U.flowbar(App.state.bureau.stage === 'REVIEW' ? 'DEPT_APPROVED' :
+          (App.state.bureau.stage === 'PRE' ? 'BUREAU_CONFIRMED' : 'OFFICIAL_PUBLISHED')) + '</span></div>' +
+        '<div class="pagehead__desc">按 1→2→3 顺序推进：权威直填 → 终审算分 → 预发布复核 → 正式定版发布；所有人工干预强制留痕，' +
         '修正生效瞬间由引擎静默重算全局 21 家的得分、排名、定级与评语。</div></div>' +
-        '<div class="pagehead__actions">' + U.flowbar(App.state.bureau.stage === 'REVIEW' ? 'DEPT_APPROVED' :
-          (App.state.bureau.stage === 'PRE' ? 'BUREAU_CONFIRMED' : 'OFFICIAL_PUBLISHED')) + '</div></div>' +
+        '</div>' +
         '<div class="govtabs">' + tabs.map(function (t) {
           return '<button class="govtab' + (t.key === cur ? ' is-active' : '') + '" data-govtab="' + t.key + '">' +
+            (t.step ? '<span class="govtab__step">' + t.step + '</span>' : '') +
             U.esc(t.label) + (t.badge ? '<span class="govtab__badge' + (isNaN(+t.badge) ? '' : ' govtab__badge--done') + '">' + t.badge + '</span>' : '') +
             '</button>';
         }).join('') + '</div>' +
@@ -232,6 +234,7 @@
           cell.textContent = U.num(s);
           cell.className = 'deduct' + (s >= 10 ? ' is-zero' : (s < 9.8 ? ' is-loss' : ''));
           cell.nextElementSibling.textContent = '10 − ' + App.state.direct[unit].check + ' × 0.1';
+          App.markDirty();   /* P0 #8 */
         });
       });
       var dfSave = root.querySelector('#dfSave');
@@ -268,6 +271,13 @@
             };
           });
           App.state.audit = App.state.audit.concat(recs);
+          /* P1 #16：录入人 / 录入时间随本次保存回写（与审计日志同源） */
+          changed.forEach(function (c) {
+            window.PD.directFill.forEach(function (r) {
+              if (r.unit === c.unit) { r.filledBy = '张伟（局供应链管理部）'; r.filledAt = App.now(); }
+            });
+          });
+          App.clearDirty();
           U.toast('已保存直填并触发引擎重算：' + changed.length + ' 家合规管理得分已刷新', 'success');
           App.rerender();
         });

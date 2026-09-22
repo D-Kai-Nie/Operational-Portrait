@@ -1,6 +1,5 @@
 /* ============================================================
-   通用组件：卡片 / 按钮 / 标签 / 表格 / 表单 / 弹窗 / Toast …
-   ============================================================ */
+   通用组件：卡?/ 按钮 / 标 / 表格 / 表单 / 弹窗 / Toast ?   ============================================================ */
 
 /* ---------- 页头 ---------- */
 .pagehead{display:flex;align-items:flex-start;justify-content:space-between;gap:var(--s4);margin-bottom:var(--s4);flex-wrap:wrap}
@@ -14,7 +13,7 @@
 .card__head{display:flex;align-items:center;justify-content:space-between;gap:var(--s3);padding:var(--s3) var(--s4);border-bottom:1px solid var(--border);flex-wrap:wrap}
 .card__title{display:flex;align-items:center;gap:var(--s2);font-size:var(--fs-h3);font-weight:600;color:var(--t1)}
 .card__title::before{content:"";width:3px;height:13px;border-radius:2px;background:var(--brand)}
-.card__note{font-size:11px;color:var(--t3);font-weight:400}
+.card__note{font-size:12px;color:var(--t3);font-weight:400}
 .card__body{padding:var(--s4)}
 .card__body--tight{padding:var(--s3)}
 .card__foot{padding:var(--s3) var(--s4);border-top:1px solid var(--border);background:var(--bg-soft);display:flex;justify-content:flex-end;gap:var(--s2)}
@@ -38,9 +37,9 @@
 .btn[disabled],.btn.is-disabled{background:#F5F5F5;border-color:var(--border-strong);color:#BEBEBE;cursor:not-allowed}
 .btnbar{display:flex;align-items:center;gap:var(--s2);flex-wrap:wrap}
 
-/* ---------- 标签 / 徽章 ---------- */
+/* ---------- 标 / 徽章 ---------- */
 .tag{display:inline-flex;align-items:center;height:20px;padding:0 7px;border:1px solid;border-radius:var(--r1);
-  font-size:11px;white-space:nowrap;line-height:1}
+  font-size:12px;white-space:nowrap;line-height:1}
 .tag--gray{color:#666;border-color:var(--border-strong);background:var(--bg-soft)}
 .tag--blue{color:#1890FF;border-color:#91D5FF;background:#E6F7FF}
 .tag--green{color:#52C41A;border-color:#B7EB8F;background:#F6FFED}
@@ -54,15 +53,15 @@
 .tag--grade-较弱{color:#FA8C16;border-color:#FFD591;background:#FFF7E6}
 .tag--grade-弱{color:#F5222D;border-color:#FFA39E;background:#FFF1F0}
 .chip{display:inline-flex;align-items:center;gap:5px;height:22px;padding:0 9px;border-radius:11px;
-  background:var(--bg-soft);border:1px solid var(--border);font-size:11px;color:var(--t2)}
+  background:var(--bg-soft);border:1px solid var(--border);font-size:12px;color:var(--t2)}
 .chip--brand{background:var(--brand-light);border-color:#91D5FF;color:var(--brand-dark)}
 /* 页头期别标签（自顶栏下移至页头操作区，可点击切换期别） */
 .chip--period{height:26px;padding:0 10px;border-radius:var(--r2);cursor:pointer;transition:all .15s;font-size:12px;
   background:#fff;border-color:var(--border-strong)}
 .chip--period:hover{border-color:var(--primary);color:var(--primary);background:var(--brand-light)}
-.chip--period .chip__label{color:var(--t3);font-size:11px;margin-right:2px}
+.chip--period .chip__label{color:var(--t3);font-size:12px;margin-right:2px}
 .medal{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;
-  font-size:11px;font-weight:700;color:#fff}
+  font-size:12px;font-weight:700;color:#fff}
 .medal--1{background:linear-gradient(135deg,#E8B923,#C8901A)}
 .medal--2{background:linear-gradient(135deg,#A9B6C4,#7C8B9B)}
 .medal--3{background:linear-gradient(135deg,#CB8B4E,#A9682F)}
@@ -80,19 +79,19 @@
 .table .ctr{text-align:center}
 .table th.sortable{cursor:pointer;user-select:none}
 .table th.sortable:hover{color:var(--primary)}
-.table th .sortmark{font-size:10px;color:var(--t4);margin-left:3px}
+.table th .sortmark{font-size:12px;color:var(--t4);margin-left:3px}
 .table th.is-sorted .sortmark{color:var(--primary)}
 .table tfoot td{background:var(--bg-soft);font-weight:600}
 .row--top3{background:#FFFBF0}
 .row--bot3{background:#FAFAFA}
 .cell--top3{color:var(--danger);font-weight:600}
 .cell--bot3{color:var(--success-deep);font-weight:600}
-.cell__sub{display:block;font-size:11px;color:var(--t3);margin-top:2px}
+.cell__sub{display:block;font-size:12px;color:var(--t3);margin-top:2px}
 .cell__main{font-weight:600}
 .cell--mute{color:var(--t4)}
 .dualcell{display:flex;flex-direction:column;gap:2px;line-height:1.35}
 .dualcell__a{font-size:13px;font-weight:600;color:var(--t1)}
-.dualcell__b{font-size:11px;color:var(--t3)}
+.dualcell__b{font-size:12px;color:var(--t3)}
 
 /* ---------- 表单 ---------- */
 .form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--s3) var(--s5)}
@@ -100,8 +99,8 @@
 .field{display:flex;flex-direction:column;gap:6px;min-width:0}
 .field__label{font-size:12px;color:var(--t2);display:flex;align-items:center;gap:4px}
 .field__label .req{color:var(--danger)}
-.field__hint{font-size:11px;color:var(--t3);line-height:1.6}
-.field__err{font-size:11px;color:var(--danger);display:none}
+.field__hint{font-size:12px;color:var(--t3);line-height:1.6}
+.field__err{font-size:12px;color:var(--danger);display:none}
 .field.is-invalid .field__err{display:block}
 .field.is-invalid .input,.field.is-invalid .select,.field.is-invalid .textarea{border-color:var(--danger)}
 .field.is-warn .input,.field.is-warn .select{border-color:var(--warning);background:#FFFBF5}
@@ -128,11 +127,11 @@
 .formsection:first-child{border-top:0;margin-top:0;padding-top:0}
 .formsection__title{display:flex;align-items:center;gap:var(--s2);font-size:13px;font-weight:600;margin-bottom:var(--s3)}
 .formsection__title .idx{width:20px;height:20px;border-radius:50%;background:var(--brand-light);color:var(--brand-dark);
-  font-size:11px;display:flex;align-items:center;justify-content:center}
+  font-size:12px;display:flex;align-items:center;justify-content:center}
 
-/* ---------- 状态条 / 进度 ---------- */
+/* ---------- 鐘舵€佹潯 / 杩涘害 ---------- */
 .flowbar{display:flex;align-items:center;gap:0;flex-wrap:wrap}
-.flowbar__node{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--t3);padding:4px 0}
+.flowbar__node{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--t3);padding:4px 0}
 .flowbar__dot{width:16px;height:16px;border-radius:50%;border:1.5px solid var(--border-strong);background:#fff;
   display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--t3);flex:0 0 auto}
 .flowbar__node.is-done .flowbar__dot{border-color:var(--primary);background:var(--primary);color:#fff}
@@ -201,7 +200,7 @@
 .inline--between{display:flex;align-items:center;justify-content:space-between;gap:var(--s3);flex-wrap:wrap}
 .muted{color:var(--t3)}
 .mt2{margin-top:var(--s2)} .mt3{margin-top:var(--s3)} .mt4{margin-top:var(--s4)}
-.note{font-size:11px;color:var(--t3);line-height:1.7}
+.note{font-size:12px;color:var(--t3);line-height:1.7}
 .divider{height:1px;background:var(--border);margin:var(--s4) 0}
 
 /* 权限阻断页 */
@@ -210,3 +209,35 @@
 .blocked__code{font-size:44px;font-weight:700;color:var(--danger);letter-spacing:2px}
 .blocked__title{font-size:16px;font-weight:600;margin:var(--s3) 0 var(--s2)}
 .blocked__text{font-size:12px;color:var(--t2);line-height:1.9}
+
+/* ---------- 待办中心（顶栏铃铛下拉） ---------- */
+.todopanel__title{font-size:12px;color:var(--t3);margin-bottom:4px}
+.todopanel__row{display:flex;align-items:center;gap:8px;padding:7px 4px;border-bottom:1px dashed var(--border);cursor:pointer;border-radius:var(--r2)}
+.todopanel__row:last-child{border-bottom:0}
+.todopanel__row:hover{background:var(--bg-hover)}
+.todopanel__dot{width:6px;height:6px;border-radius:50%;background:var(--warning-deep);flex:0 0 auto}
+.todopanel__text{flex:1 1 auto;font-size:13px;color:var(--t1);line-height:1.6}
+
+/* ---------- 宽表冻结前两列（横向滚动时保持行标识） ---------- */
+.table--sticky th:nth-child(1),.table--sticky td:nth-child(1){position:sticky;left:0;z-index:2;background:#fff}
+.table--sticky th:nth-child(2),.table--sticky td:nth-child(2){position:sticky;left:52px;z-index:2;background:#fff;
+  box-shadow:1px 0 0 var(--border)}
+.table--sticky thead th:nth-child(1),.table--sticky thead th:nth-child(2){background:var(--bg-soft);z-index:3}
+.table--sticky tbody tr:hover td:nth-child(1),.table--sticky tbody tr:hover td:nth-child(2){background:#F7FBFF}
+.table--sticky tr.row--top3 td:nth-child(1),.table--sticky tr.row--top3 td:nth-child(2){background:#FFFBF0}
+.table--sticky tr.row--bot3 td:nth-child(1),.table--sticky tr.row--bot3 td:nth-child(2){background:#FAFAFA}
+
+/* ---------- 可排序表头键盘可达 ---------- */
+.table th.sortable{cursor:pointer}
+.table th.sortable:focus-visible{outline:2px solid var(--primary);outline-offset:-2px}
+
+/* ---------- 表格筛选条 ---------- */
+.filterbar{display:flex;align-items:center;gap:var(--s2);flex-wrap:wrap}
+.filterbar .input,.filterbar .select{height:30px}
+.searchbox{position:relative;display:inline-flex}
+.searchbox svg{position:absolute;left:8px;top:50%;transform:translateY(-50%);color:var(--t3);pointer-events:none}
+.searchbox .input{width:190px;padding-left:28px}
+
+/* ---------- 排序状态说明 ---------- */
+.sortnote{font-size:12px;color:var(--t3)}
+.sortnote b{color:var(--t2);font-weight:600}

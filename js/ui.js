@@ -18,7 +18,17 @@ window.UI = (function () {
     info: '<circle cx="8" cy="8" r="6.2"/><path d="M8 7.2v4M8 5.1v.2"/>',
     clock: '<circle cx="8" cy="8" r="6.2"/><path d="M8 4.4V8l2.6 1.6"/>',
     lock: '<rect x="3.4" y="7" width="9.2" height="6.6" rx="1.2"/><path d="M5.6 7V5.2a2.4 2.4 0 0 1 4.8 0V7"/>',
-    flow: '<circle cx="3.4" cy="4" r="1.8"/><circle cx="12.6" cy="12" r="1.8"/><path d="M5.2 4h4.4a2 2 0 0 1 2 2v4.4"/>'
+    flow: '<circle cx="3.4" cy="4" r="1.8"/><circle cx="12.6" cy="12" r="1.8"/><path d="M5.2 4h4.4a2 2 0 0 1 2 2v4.4"/>',
+    layers: '<path d="M8 1.8 1.8 5 8 8.2 14.2 5z"/><path d="M1.8 8.6 8 11.8l6.2-3.2M1.8 11.6 8 14.8l6.2-3.2"/>',
+    todo: '<rect x="2.2" y="2.2" width="11.6" height="11.6" rx="1.4"/><path d="M5.2 8l1.9 1.9 3.7-3.9"/>',
+    arrowleft: '<path d="M13.5 8h-11"/><path d="M6.8 4.3 3.1 8l3.7 3.7"/>',
+    /* 平台级示例菜单图标（与兄弟项目侧栏一致的语义） */
+    monitor: '<rect x="1.5" y="1.5" width="13" height="13" rx="1.5"/><path d="M1.5 6h13M6 6v8.5"/>',
+    globe: '<circle cx="8" cy="8" r="6.5"/><path d="M8 1.5v13M1.5 8h13"/>',
+    alert: '<path d="M8 1.5L15 14H1z"/><path d="M8 6v3.2M8 11.6v.2"/>',
+    setting: '<circle cx="8" cy="8" r="1.8"/><path d="M8 1.5v1.5M8 13v1.5M1.5 8h1.5M13 8h1.5M3.6 3.6l1.1 1.1M11.3 11.3l1.1 1.1M3.6 12.4l1.1-1.1M11.3 4.7l1.1-1.1"/>',
+    report: '<path d="M2.5 1.5h9l3 3v10h-12z"/><path d="M11.5 1.5v3h3M5 8h6M5 10.5h6M5 13h4"/>',
+    link: '<path d="M4.5 11.5v-7a1.5 1.5 0 0 1 3 0v6M4.5 7h3a1.5 1.5 0 0 0 0-3M4.5 11.5a1.5 1.5 0 0 0 0 3h7a1.5 1.5 0 0 0 0-3h-3a1.5 1.5 0 0 0 0 3"/>'
   };
   function icon(name, size) {
     size = size || 15;

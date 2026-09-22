@@ -114,14 +114,15 @@
         numberField('planIncome', '策划项实际收入', F.biz.planIncome, { unit: '万元', req: true, readonly: !editable, hint: '分母' }) +
         numberField('planBenefit', '实际采购策划效益额', F.biz.planBenefit, { unit: '万元', req: true, readonly: !editable, hint: '分子' }) +
         numberField('planRate', '采购策划效益率（自动换算）', planRate.toFixed(2), { unit: '%', readonly: true, hint: '上期 ' + prev.planRate + '% ' + dlt(planRate, prev.planRate) }) +
-        '<div class="field"><label class="field__label">即时测算</label>' +
-        '<div class="preview" id="pvPlan">输入后自动计算</div></div>' +
-        '</div>' +
-        '<div class="form form--1" style="margin-top:12px"><div class="field" id="f-proof">' +
+        /* P1 #7：极值佐证字段就近放置在触发它的字段之后（占满整行） */
+        '<div class="field" id="f-proof" style="grid-column:1 / -1">' +
         '<label class="field__label">极值佐证说明<span class="req">*</span></label>' +
         '<textarea class="textarea" id="proof" placeholder="策划效益率较上期变动超过 20%，请提供书面佐证（如台账口径调整、项目结算集中确认等）"' +
         (editable ? '' : ' readonly') + '>' + U.esc(App.state.fillProof || '') + '</textarea>' +
-        '<div class="field__err">变动幅度超过 20% 时必须填写佐证说明</div></div></div>' +
+        '<div class="field__err">变动幅度超过 20% 时必须填写佐证说明</div></div>' +
+        '<div class="field"><label class="field__label">即时测算</label>' +
+        '<div class="preview" id="pvPlan">输入后自动计算</div></div>' +
+        '</div>' +
         '</div>' +
         '</div></div>' +
 
@@ -193,6 +194,11 @@
         Array.prototype.forEach.call(root.querySelectorAll('[data-mode]'), function (inp) {
           inp.addEventListener('input', function () { App.readForm(root); });
         });
+        /* P0 #8：任何输入即标记为「有未保存修改」，离开页面前拦截 */
+        Array.prototype.forEach.call(root.querySelectorAll('input:not([readonly]), textarea:not([readonly])'), function (el) {
+          el.addEventListener('input', function () { App.markDirty(); });
+          el.addEventListener('change', function () { App.markDirty(); });
+        });
       } else {
         refresh();
       }
@@ -202,6 +208,7 @@
         save.addEventListener('click', function () {
           App.readForm(root);
           App.state.fillProof = root.querySelector('#proof').value;
+          App.clearDirty();
           U.toast('草稿已保存（本地演示）', 'success');
         });
       }
@@ -215,6 +222,7 @@
           U.confirm('确认提交数据包至二级单位供应链负责人审核？提交后表单将锁定为只读状态。', function () {
             App.state.pkg.status = 'SUBMITTED';
             App.state.pkg.submittedAt = App.now();
+            App.clearDirty();
             U.toast('已提交，状态更新为「已上报待负责人审」', 'success');
             App.rerender();
           }, { okText: '确认提交' });

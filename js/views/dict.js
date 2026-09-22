@@ -10,17 +10,20 @@
 
   function dictTable() {
     var dict = window.PD.indicatorDict;
+    var dims = window.PD.dims;
     var weightSum = dict.reduce(function (a, d) { return a + (+d.weight || 0); }, 0);
-    return '<div class="card"><div class="card__head">' +
-      '<span class="card__title">指标字典 · 15 项计分指标 + 1 项展示指标 + 2 项定性支撑' +
-      '<span class="card__note">公式与扣减系数固化于算分引擎底层，配置变更须走系统审批并留痕</span></span>' +
-      '<div class="inline">' +
-      '<span class="tag ' + (weightSum === 100 ? 'tag--green' : 'tag--red') + '">Σ 权重 = ' + weightSum + ' 分' + (weightSum === 100 ? '（校验通过）' : '（校验失败）') + '</span>' +
-      '<span class="chip">8 大维度</span></div></div>' +
-      '<div class="tablewrap"><table class="table"><thead><tr>' +
-      '<th>维度</th><th>指标名称</th><th class="ctr">权重</th><th class="ctr">指标性质</th><th class="ctr">方向</th>' +
-      '<th>得分公式</th><th>业务统计口径</th><th>理论分值区间</th><th>数据来源 / 采集方式</th></tr></thead><tbody>' +
-      dict.map(function (d) {
+    /* P2 #4：按 8 大维度分组 + 维度小计，降低 18 行平铺的定位成本 */
+    var order = dims.map(function (d) { return d.name; }).concat(['基础支撑']);
+    var html = '';
+    order.forEach(function (dimName) {
+      var rows = dict.filter(function (d) { return d.dim === dimName; });
+      if (!rows.length) { return; }
+      var sub = rows.reduce(function (a, d) { return a + (+d.weight || 0); }, 0);
+      html += '<tr class="dictgroup"><td colspan="9"><div class="dictgroup__title">' +
+        U.esc(dimName) + '<span class="dictgroup__sum">' + (sub > 0 ?
+          ('维度权重合计 ' + sub + ' 分 · ' + rows.length + ' 项') : ('不计分 · ' + rows.length + ' 项（定性/展示）')) +
+        '</span></div></td></tr>';
+      html += rows.map(function (d) {
         var isScore = d.weight > 0;
         return '<tr>' + '<td>' + U.esc(d.dim) + '</td>' +
           '<td><span class="cell__main">' + U.esc(d.name) + '</span>' +
@@ -35,7 +38,18 @@
           '<td class="ctr">' + U.esc(d.range) + '</td>' +
           '<td><span class="note">' + U.esc(d.source) + '</span><span class="cell__sub">' + U.esc(d.collect) + '</span></td>' +
           '</tr>';
-      }).join('') + '</tbody></table></div></div>';
+      }).join('');
+    });
+    return '<div class="card"><div class="card__head">' +
+      '<span class="card__title">指标字典 · 15 项计分指标 + 1 项展示指标 + 2 项定性支撑' +
+      '<span class="card__note">按维度分组 · 公式与扣减系数固化于算分引擎底层，配置变更须走系统审批并留痕</span></span>' +
+      '<div class="inline">' +
+      '<span class="tag ' + (weightSum === 100 ? 'tag--green' : 'tag--red') + '">Σ 权重 = ' + weightSum + ' 分' + (weightSum === 100 ? '（校验通过）' : '（校验失败）') + '</span>' +
+      '<span class="chip">8 大维度</span></div></div>' +
+      '<div class="tablewrap"><table class="table"><thead><tr>' +
+      '<th>维度</th><th>指标名称</th><th class="ctr">权重</th><th class="ctr">指标性质</th><th class="ctr">方向</th>' +
+      '<th>得分公式</th><th>业务统计口径</th><th>理论分值区间</th><th>数据来源 / 采集方式</th></tr></thead><tbody>' +
+      html + '</tbody></table></div></div>';
   }
 
   function algorithmCard() {

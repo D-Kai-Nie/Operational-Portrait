@@ -17,8 +17,7 @@
   <!-- 顶部导航（与面包屑同一蓝色背景区域） -->
   <header class="topbar" id="topbar">
     <div class="topbar__left">
-      <a class="brand" href="javascript:;" id="brandHome">
-        <span class="brand__badge">DSC</span>
+      <a class="brand" href="javascript:;" id="brandHome" title="返回画像总览">
         <span class="brand__text">中建八局数字供应链</span>
       </a>
       <nav class="modnav" id="modnav">
@@ -30,12 +29,12 @@
       </nav>
     </div>
     <div class="topbar__right">
-      <button class="iconbtn" id="notifyBtn" title="消息通知">
-        <svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2a4 4 0 0 1 4 4v2.5l1.5 2.5h-11L4 8.5V6a4 4 0 0 1 4-4z"/><path d="M6.5 13a1.8 1.8 0 0 0 3 0"/></svg>
+      <button class="iconbtn" id="notifyBtn" title="消息与待办">
+        <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2a4 4 0 0 1 4 4v2.5l1.5 2.5h-11L4 8.5V6a4 4 0 0 1 4-4z"/><path d="M6.5 13a1.8 1.8 0 0 0 3 0"/></svg>
         <span class="iconbtn__badge" id="notifyBadge">4</span>
       </button>
-      <div class="roleswitch" id="roleswitch">
-        <span class="roleswitch__label">当前角色</span>
+      <div class="roleswitch" id="roleswitch" title="演示用角色切换：生产环境按账号授权，无此开关">
+        <span class="roleswitch__label">角色</span>
         <select class="roleswitch__select" id="roleSelect"></select>
       </div>
       <button class="userbox" id="userBox">
@@ -56,10 +55,8 @@
     <aside class="sidebar" id="sidebar">
       <nav class="sidenav" id="sidenav"></nav>
       <div class="sidebar__foot">
-        <div class="flowmini" id="flowMini"></div>
-        <button class="collapsebtn" id="collapseBtn" title="收起菜单">
-          <svg viewBox="0 0 16 16" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M1.5 4h13M1.5 12h13M1.5 8h13"/></svg>
-          <span class="collapsebtn__text">收起菜单</span>
+        <button class="side-toggle" id="collapseBtn" title="收起 / 展开菜单">
+          <svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M1.5 4h13M1.5 12h13M1.5 8h13"/></svg>
         </button>
       </div>
     </aside>

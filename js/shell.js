@@ -11,7 +11,11 @@ window.App = (function () {
     view: 'overview',
     unitId: 1,
     collapsed: false,
+    navOpen: true,
+    dirty: false,
     ovSort: { key: 'total', dir: 'desc' },
+    filterKw: '',
+    filterGrade: '全部',
     ptSort: { key: 'dim', dir: 'asc' },
     chartMode: 'radar',
     govTab: 'direct',
@@ -35,23 +39,72 @@ window.App = (function () {
     return '2026-07-' + p(d.getDate()) + ' ' + p(d.getHours()) + ':' + p(d.getMinutes());
   }
 
-  /* ---------------- 导航与面包屑 ---------------- */
+  /* ---------------- 导航（分组头 + 带图标子菜单 + 状态徽标） ---------------- */
+  function navBadge(key) {
+    var st = state.pkg.status, stage = state.bureau.stage;
+    if (key === 'fill') {
+      if (st === 'DEPT_REJECTED') { return { text: '已驳回', tone: 'warn' }; }
+      if (st === 'DRAFT') { return { text: '待提交', tone: '' }; }
+      if (st === 'SUBMITTED') { return { text: '审核中', tone: '' }; }
+      return null;
+    }
+    if (key === 'review') {
+      return st === 'SUBMITTED' ? { text: '待审 1', tone: 'warn' } : null;
+    }
+    if (key === 'govern') {
+      if (stage === 'REVIEW') { return { text: '待终审', tone: 'warn' }; }
+      if (stage === 'PRE') { return { text: '待发布', tone: 'warn' }; }
+      return null;
+    }
+    return null;
+  }
+
+  /* 平台级示例菜单（与兄弟项目「月度考核」侧栏一致：功能分组之上的平台既有菜单，演示为占位入口） */
+  var PLATFORM_MENUS = [
+    { label: '数据大屏', icon: 'monitor' },
+    { label: '数据全景', icon: 'globe' },
+    { label: '合规预警', icon: 'alert' },
+    { label: '智慧运营配置', icon: 'setting' },
+    { label: '分析报告', icon: 'report' },
+    { label: '智链通', icon: 'link' }
+  ];
+
   function renderNav() {
     var host = document.getElementById('sidenav');
     if (role().blocked) {
-      host.innerHTML = '<div class="sidenav__group">供应链画像</div>' +
-        '<div class="navitem" style="opacity:.5;cursor:not-allowed">' + U.icon('lock') +
+      host.innerHTML = '<div class="navgroup"><span class="navitem__icon">' + U.icon('lock') + '</span>' +
         '<span class="navitem__text">无可用菜单</span></div>';
       return;
     }
-    host.innerHTML = '<div class="sidenav__group">智慧运营 · 供应链画像</div>' +
+    var open = state.navOpen !== false;
+    /* 上方：平台既有菜单（占位，点击提示为平台级入口） */
+    var platform = PLATFORM_MENUS.map(function (m) {
+      return '<a class="navitem" href="javascript:;" data-platform="' + U.esc(m.label) + '">' +
+        '<span class="navitem__icon">' + U.icon(m.icon) + '</span>' +
+        '<span class="navitem__text">' + U.esc(m.label) + '</span></a>';
+    }).join('');
+    host.innerHTML = platform +
+      '<div class="navgroup' + (open ? ' is-open' : '') + '" id="navGroupHead" role="button" tabindex="0" ' +
+      'aria-expanded="' + open + '" title="供应链画像（点击展开 / 收起）">' +
+        '<span class="navitem__icon">' + U.icon('layers') + '</span>' +
+        '<span class="navitem__text">供应链画像</span>' +
+        '<span class="navgroup__caret' + (open ? ' is-open' : '') + '">' +
+          '<svg viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.6" ' +
+          'stroke-linecap="round" stroke-linejoin="round"><path d="M4 6l4 4 4-4"/></svg></span>' +
+      '</div>' +
+      '<div class="navsub' + (open ? ' is-open' : '') + '" role="menu">' +
       PD.menus.map(function (m) {
         var allowed = can(m.perm);
-        return '<div class="navitem' + (state.view === m.key ? ' is-active' : '') + '" data-nav="' + m.key + '"' +
-          (allowed ? '' : ' style="opacity:.42;cursor:not-allowed"') + '>' +
-          U.icon(m.icon) + '<span class="navitem__text">' + U.esc(m.label) + '</span>' +
-          (allowed ? '' : '<span class="navitem__lock">' + U.icon('lock', 11) + '</span>') + '</div>';
-      }).join('');
+        var b = allowed ? navBadge(m.key) : null;
+        return '<a class="navitem navitem--child' + (state.view === m.key ? ' is-active' : '') + '"' +
+          ' href="#role=' + state.roleKey + '&view=' + m.key + '" data-nav="' + m.key + '" role="menuitem"' +
+          (allowed ? '' : ' aria-disabled="true" style="opacity:.45"') + '>' +
+          '<span class="navitem__icon">' + U.icon(m.icon) + '</span>' +
+          '<span class="navitem__text">' + U.esc(m.label) + '</span>' +
+          (b ? '<span class="navitem__badge">' + U.esc(b.text) + '</span>' : '') +
+          (allowed ? '' : '<span class="navitem__lock">' + U.icon('lock', 12) + '</span>') +
+          '</a>';
+      }).join('') + '</div>';
   }
 
   function renderCrumb() {
@@ -71,37 +124,13 @@ window.App = (function () {
     });
   }
 
-  function renderFlowMini() {
-    var host = document.getElementById('flowMini');
-    if (role().blocked) { host.innerHTML = ''; return; }
-    var st = state.pkg.status, stage = state.bureau.stage;
-    var nodes = [
-      { k: 'DRAFT', t: '专员填报' }, { k: 'SUBMITTED', t: '负责人审核' },
-      { k: 'DEPT_APPROVED', t: '局总部终审' }, { k: 'PUBLISHED', t: '正式发布' }
-    ];
-    host.innerHTML = '<div style="margin-bottom:4px">本期流转</div>' + nodes.map(function (n) {
-      var cls = '';
-      if (n.k === 'DRAFT') { cls = st === 'DRAFT' ? ' is-on' : ' is-done'; }
-      if (n.k === 'SUBMITTED') {
-        if (st === 'DEPT_REJECTED') { cls = ' is-warn'; }
-        else if (st === 'SUBMITTED') { cls = ' is-on'; } else { cls = ' is-done'; }
-      }
-      if (n.k === 'DEPT_APPROVED') {
-        if (st === 'DEPT_APPROVED' || st === 'BUREAU_CONFIRMED') { cls = stage === 'REVIEW' ? ' is-on' : ' is-done'; }
-        else { cls = ''; }
-      }
-      if (n.k === 'PUBLISHED') { cls = stage === 'PUBLISHED' ? ' is-done' : (stage === 'PRE' ? ' is-on' : ''); }
-      return '<div class="flowmini__row"><span class="flowmini__dot' + cls + '"></span>' + n.t + '</div>';
-    }).join('');
-  }
-
   /* ---------------- 渲染 ---------------- */
   function rerender() {
     document.getElementById('app').classList.toggle('is-collapsed', state.collapsed);
     document.getElementById('roleSelect').value = state.roleKey;
     document.getElementById('userAvatar').textContent = role().short.charAt(0);
     document.getElementById('userName').textContent = role().label;
-    renderNav(); renderCrumb(); renderFlowMini();
+    renderNav(); renderCrumb();
 
     var main = document.getElementById('view'), r = role();
     if (r.blocked) {
@@ -127,7 +156,36 @@ window.App = (function () {
     if (view.mount) { view.mount(App, main); }
   }
 
+  /* ---------------- 未保存修改保护（P0） ---------------- */
+  function markDirty() {
+    if (!state.dirty) { state.dirty = true; }
+  }
+  function clearDirty() { state.dirty = false; }
+
+  /* 离开当前页面前确认；返回 true 表示可以离开 */
+  function guardLeave(nextLabel, onLeave) {
+    if (!state.dirty) { onLeave(); return; }
+    U.dialog({
+      title: '有未保存的修改',
+      size: 'narrow',
+      body: '<p style="font-size:13px;line-height:1.9;color:#333">当前页面存在<b>未保存的填报/直填修改</b>，' +
+        '切换后将丢失。是否先保存？</p>' +
+        '<p class="note" style="margin-top:8px">建议选择「返回保存」先点击页面上的【保存草稿】或【保存直填并重算】。</p>',
+      cancelText: '返回保存',
+      okText: '放弃修改并前往' + (nextLabel ? '「' + nextLabel + '」' : ''),
+      onOk: function () { clearDirty(); onLeave(); }
+    });
+  }
+
   function go(view, unitId) {
+    if (state.dirty && view !== state.view) {
+      guardLeave((window.Views[view] || {}).title || '', function () {
+        state.view = view;
+        if (unitId) { state.unitId = unitId; }
+        syncHash(); rerender(); document.getElementById('main').scrollTop = 0;
+      });
+      return;
+    }
     state.view = view;
     if (unitId) { state.unitId = unitId; }
     syncHash();
@@ -136,6 +194,13 @@ window.App = (function () {
   }
 
   function setRole(key) {
+    if (state.dirty && key !== state.roleKey) {
+      guardLeave('', function () { applyRole(key); });
+      return;
+    }
+    applyRole(key);
+  }
+  function applyRole(key) {
     state.roleKey = key;
     if (!role().blocked) {
       var menu = PD.menus.filter(function (m) { return m.key === state.view; })[0];
@@ -319,8 +384,11 @@ window.App = (function () {
     var dict = PD.indicatorDict.filter(function (d) { return d.weight > 0; });
     var options = dict.map(function (d) {
       var it = u.indicators.filter(function (x) { return x.name === d.name; })[0];
+      var hint = d.nature === '倒扣' ? ('每项扣 ' + d.step)
+        : d.nature === '折算' ? '× 0.10 折算'
+        : (d.step != null ? ('步长 ' + d.step) : '');
       return '<option value="' + U.esc(d.name) + '" data-val="' + (it && it.num != null ? it.num : '') + '">' +
-        U.esc(d.name) + '（' + d.dim + ' · 满分 ' + d.weight + ' · 步长 ' + d.step + '）</option>';
+        U.esc(d.name) + '（' + d.dim + ' · 满分 ' + d.weight + (hint ? ' · ' + hint : '') + '）</option>';
     }).join('');
     U.dialog({
       title: '二次修正 · ' + unitName + '（局总部超级修正权）',
@@ -397,6 +465,31 @@ window.App = (function () {
     });
   }
 
+  /* ---------------- 待办中心（按角色生成，直达卡点页面） ---------------- */
+  function todoList() {
+    var list = [], st = state.pkg.status, stage = state.bureau.stage, rk = state.roleKey;
+    if (rk === 'U2') {
+      if (st === 'DEPT_REJECTED') {
+        list.push({ text: '数据包被驳回：' + (state.pkg.reject || '需修改后重新提交'), act: function () { go('fill'); } });
+      } else if (st === 'DRAFT') {
+        list.push({ text: '填报 2026年1-6月 数据包（截止 07-15 18:00）', act: function () { go('fill'); } });
+      }
+    }
+    if (rk === 'U3' && st === 'SUBMITTED') {
+      list.push({ text: '待审核：南方公司数据包（王鹏提交，完整率 92%）', act: function () { go('review'); } });
+    }
+    if (rk === 'U1') {
+      if (stage === 'REVIEW') {
+        list.push({ text: '待终审与算分：21 家数据包齐备性校验后生成预发布版', act: function () { state.govTab = 'final'; go('govern'); } });
+      }
+      if (stage === 'PRE') {
+        list.push({ text: '待复核并正式发布：' + (state.bureau.preDigest || '预发布版'), act: function () { state.govTab = 'review'; go('govern'); } });
+      }
+      list.push({ text: '合规扣分直填：确认 21 家一标一检项数与考试台账', act: function () { state.govTab = 'direct'; go('govern'); } });
+    }
+    return list;
+  }
+
   /* ---------------- 初始化 ---------------- */
   function init() {
     var sel = document.getElementById('roleSelect');
@@ -407,8 +500,22 @@ window.App = (function () {
     sel.addEventListener('change', function () { setRole(this.value); });
 
     document.getElementById('sidenav').addEventListener('click', function (e) {
+      /* 分组头：展开 / 收起 */
+      var head = e.target.closest('#navGroupHead');
+      if (head) {
+        state.navOpen = state.navOpen === false;
+        renderNav();
+        return;
+      }
       var item = e.target.closest('[data-nav]');
+      /* 平台级示例菜单：占位提示（不属于本模块范围） */
+      var pf = e.target.closest('[data-platform]');
+      if (pf) {
+        U.toast('「' + pf.getAttribute('data-platform') + '」为 DSC 平台级模块入口，本原型聚焦智慧运营 · 供应链画像');
+        return;
+      }
       if (!item) { return; }
+      if (item.getAttribute('href')) { e.preventDefault(); }   /* 保持 <a> 可聚焦，导航由 go() 接管 */
       var key = item.getAttribute('data-nav');
       var menu = PD.menus.filter(function (m) { return m.key === key; })[0];
       if (!can(menu.perm)) {
@@ -416,6 +523,18 @@ window.App = (function () {
         return;
       }
       go(key);
+    });
+    /* 键盘可达：分组头支持 Enter / Space */
+    document.getElementById('sidenav').addEventListener('keydown', function (e) {
+      if (e.key !== 'Enter' && e.key !== ' ') { return; }
+      var head = e.target.closest('#navGroupHead');
+      if (head) {
+        e.preventDefault();
+        state.navOpen = state.navOpen === false;
+        renderNav();
+        var h2 = document.getElementById('navGroupHead');
+        if (h2) { h2.focus(); }
+      }
     });
     document.getElementById('collapseBtn').addEventListener('click', function () {
       state.collapsed = !state.collapsed;
@@ -428,15 +547,32 @@ window.App = (function () {
       });
     });
     document.getElementById('notifyBtn').addEventListener('click', function () {
-      U.dialog({
-        title: '消息通知（' + PD.notifications.length + '）',
+      var todos = todoList();
+      var html = '<div class="todopanel">' +
+        '<div class="todopanel__title">待我处理（' + todos.length + '）</div>';
+      html += todos.length ? todos.map(function (t, i) {
+        return '<div class="todopanel__row" data-todo="' + i + '">' +
+          '<span class="todopanel__dot"></span><span class="todopanel__text">' + U.esc(t.text) + '</span>' +
+          '<span class="btn--link">去处理</span></div>';
+      }).join('') : '<div class="note" style="padding:6px 0">当前角色暂无待办事项</div>';
+      html += '<div class="todopanel__title" style="margin-top:12px">消息通知</div>';
+      html += PD.notifications.map(function (n) {
+        return '<div class="validlist__row" style="padding:5px 0"><span class="validlist__icon validlist__icon--' +
+          (n.tone === 'green' ? 'pass' : 'warn') + '">!</span>' +
+          '<span>' + U.esc(n.text) + '<span class="cell__sub">' + U.esc(n.at) + '</span></span></div>';
+      }).join('') + '</div>';
+      var dlg = U.dialog({
+        title: '消息与待办',
         size: 'narrow',
-        body: '<div class="stack stack--sm">' + PD.notifications.map(function (n) {
-          return '<div class="validlist__row"><span class="validlist__icon validlist__icon--' +
-            (n.tone === 'green' ? 'pass' : n.tone === 'warn' ? 'warn' : 'warn') + '">!</span>' +
-            '<span>' + U.esc(n.text) + '<span class="cell__sub">' + U.esc(n.at) + '</span></span></div>';
-        }).join('') + '</div>',
-        okText: '知道了'
+        body: html,
+        foot: false
+      });
+      Array.prototype.forEach.call(dlg.el.querySelectorAll('[data-todo]'), function (row) {
+        row.addEventListener('click', function () {
+          var t = todos[+row.getAttribute('data-todo')];
+          dlg.close();
+          t.act();
+        });
       });
     });
     document.getElementById('userBox').addEventListener('click', function () {
@@ -475,6 +611,7 @@ window.App = (function () {
     generatePreRelease: generatePreRelease, publishOfficial: publishOfficial,
     openCorrection: openCorrection, applyCorrection: applyCorrection, exportReport: exportReport,
     openPeriodDialog: openPeriodDialog,
+    markDirty: markDirty, clearDirty: clearDirty,
     init: init
   };
 })();

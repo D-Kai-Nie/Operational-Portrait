@@ -27,15 +27,19 @@
   /* 文字 */
   --t1:#333333; --t2:#666666; --t3:#999999; --t4:#CCCCCC;
   /* 中性 */
-  --white:#FFFFFF; --bg:#F5F5F5; --bg-soft:#FAFAFA; --bg-hover:#F3F9FF;
+  --white:#FFFFFF; --bg:#F0F2F5; --bg-soft:#FAFAFA; --bg-hover:#F3F9FF;
   --border:#E8E8E8; --border-strong:#D9D9D9;
+  /* 顶部导航（与兄弟项目「月度考核」统一：横向品牌蓝渐变） */
+  --nav-grad:linear-gradient(90deg, #0A75D9 0%, #1890FF 100%);
+  --nav-hover:#007CCC;
+  --nav-active:#0A75D9;
   /* 级别色（五级定级） */
   --g-hao:#52C41A; --g-jiaohao:#1890FF; --g-yiban:#8C8C8C;
   --g-jiaoruo:#FA8C16; --g-ruo:#F5222D;
 
-  /* 字体 */
-  --font:"PingFang SC","Microsoft YaHei","微软雅黑","Helvetica Neue",Arial,sans-serif;
-  --fs-h1:20px; --fs-h2:16px; --fs-h3:14px; --fs-body:13px; --fs-sm:12px;
+  /* 字体（与兄弟项目「月度考核」对齐：正文 14px，辅助最小 12px） */
+  --font:"Microsoft YaHei","PingFang SC","微软雅黑","Helvetica Neue",Arial,sans-serif;
+  --fs-h1:20px; --fs-h2:16px; --fs-h3:14px; --fs-body:14px; --fs-sm:12px;
   /* 间距（基础间距 8px 体系） */
   --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s5:24px; --s6:32px;
   /* 圆角 */
@@ -45,7 +49,7 @@
   --sh2:0 2px 8px rgba(0,0,0,.08);
   --sh3:0 8px 24px rgba(0,0,0,.16);
 
-  --topbar-h:52px; --crumb-h:40px; --sidebar-w:212px; --sidebar-w-min:56px;
+  --topbar-h:56px; --crumb-h:40px; --sidebar-w:240px; --sidebar-w-min:48px;
 }
 
 *{margin:0;padding:0;box-sizing:border-box}

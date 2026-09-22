@@ -11,6 +11,13 @@
 
   var DIM_TONE = { '好': '#52C41A', '较好': '#1890FF', '一般': '#BFBFBF', '较弱': '#FA8C16', '弱': '#F5222D' };
 
+  /* 取值单位统一：量纲型指标若取值未带单位，则按字典补单位（如 22.22 → 22.22天） */
+  function withUnit(val, unit) {
+    if (!unit || unit === '%' || unit === '条/亿元') { return val; }
+    var s = String(val);
+    return /[项条分天万元亿元%]$/.test(s) ? s : s + unit;
+  }
+
   /* ---------- 雷达图（当前单位 vs 全局均值） ---------- */
   function radar(unit, units, dims) {
     var cx = 186, cy = 172, R = 112, n = dims.length;
@@ -100,7 +107,8 @@
       } else if (ind.name === '六项降本金额') {
         return '';
       } else {
-        valCell = '<span class="cell__main">' + U.esc(ind.val) + '</span>';
+        /* P1 #20：取值单位统一（招采时长等量纲型指标补齐字典单位） */
+        valCell = '<span class="cell__main">' + U.esc(withUnit(ind.val, meta.unit)) + '</span>';
       }
       var r = ind.rank;
       var scoreTxt = ind.score === '—' ? '<span class="cell--mute">不计分</span>' : U.num(ind.score);
@@ -112,7 +120,7 @@
         (ind.rtype === '展示' ? '<span class="cell__sub">展示型指标 · 不计分</span>' : '') + '</td>' +
         '<td>' + U.esc(ind.cat) + '</td>' +
         '<td>' + valCell + '</td>' +
-        '<td class="ctr">' + scoreTxt + (meta.weight ? '<span class="cell__sub">满分 ' + meta.weight + '</span>' : '') + '</td>' +
+        '<td class="num">' + scoreTxt + (meta.weight ? '<span class="cell__sub">满分 ' + meta.weight + '</span>' : '') + '</td>' +
         '<td class="ctr">' + rankCell + '</td>' +
         '<td><span class="note">' + U.esc(meta.source || '—') + ' · ' + U.esc(meta.collect || '') +
         (meta.nature ? ' · ' + meta.nature : '') + '</span>' +
@@ -175,6 +183,7 @@
         '<div class="pagehead__desc">画像期别 ' + U.esc(App.period().name) + '（' + U.esc(App.period().range) + '）· ' +
         '数据基线为 2026 年 1-6 月实测档案 · 全部展示值由算分引擎唯一输出。</div></div>' +
         '<div class="pagehead__actions">' +
+        '<button class="btn btn--default btn--sm btn-back" id="ptBack">' + U.icon('arrowleft', 13) + '返回总览</button>' +
         '<span class="note">单位切换</span>' +
         '<select class="select" id="ptUnit" style="width:170px">' + units.map(function (u) {
           return '<option value="' + u.id + '"' + (u.id === unit.id ? ' selected' : '') + '>' +
@@ -214,12 +223,12 @@
             var r = unit.dimRanks[i];
             var rc = r <= 3 ? ' cell--top3' : (r >= 19 ? ' cell--bot3' : '');
             return '<tr><td>' + (i + 1) + '.' + d.name + '（' + d.full + '）</td>' +
-              '<td class="ctr cell__main">' + U.num(unit.dimScores[i]) + '</td>' +
+              '<td class="num cell__main">' + U.num(unit.dimScores[i]) + '</td>' +
               '<td class="ctr' + rc + '">' + r + '/' + units.length + '</td>' +
               '<td class="ctr">' + U.gradeTag(unit.dimGrades[i]) + '</td></tr>';
           }).join('') +
           '</tbody><tfoot><tr><td>画像总分（100）</td>' +
-          '<td class="ctr cell--top3" style="font-size:14px">' + U.num(unit.total) + '</td>' +
+          '<td class="num cell--top3" style="font-size:14px">' + U.num(unit.total) + '</td>' +
           '<td class="ctr cell--top3">' + unit.rank + '/' + units.length + '</td>' +
           '<td class="ctr">' + U.gradeTag(unit.grade) + '</td></tr></tfoot></table></div></div>' +
         '</div>' +
@@ -231,6 +240,8 @@
     mount: function (App, root) {
       var sel = root.querySelector('#ptUnit');
       if (sel) { sel.addEventListener('change', function () { App.go('portrait', +this.value); }); }
+      var back = root.querySelector('#ptBack');
+      if (back) { back.addEventListener('click', function () { App.go('overview'); }); }
       var ex = root.querySelector('#ptExport');
       if (ex) { ex.addEventListener('click', function () { App.exportReport(App.unit()); }); }
       Array.prototype.forEach.call(root.querySelectorAll('#ptChartTabs .tabs__item'), function (b) {
