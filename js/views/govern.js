@@ -115,9 +115,12 @@
   function tabReview(App) {
     var units = App.units(), dims = window.PD.dims;
     var stage = App.state.bureau.stage;
+    /* P0 #5：未就绪时不只给一句提示，补一个直达前置步骤的动作 */
     if (stage === 'REVIEW') {
       return '<div class="card"><div class="card__body">' +
-        U.empty('预发布版尚未生成。请先在【终审与算分】完成 21 家数据齐备校验并生成预发布版。') + '</div></div>';
+        U.empty('预发布版尚未生成。请先在【终审与算分】完成 21 家数据齐备校验并生成预发布版。',
+          '<button class="btn btn--primary btn--sm" id="goFinal">' + U.icon('arrowleft', 13) +
+          '前往【终审与算分】</button>') + '</div></div>';
     }
     var sorted = units.slice().sort(function (a, b) { return a.rank - b.rank; });
     return '<div class="dialog__tip">' + U.tag('预发布复核', 'orange') +
@@ -190,10 +193,13 @@
   V.govern = {
     title: '画像治理',
     render: function (App) {
+      /* P0 #5：四个页签存在 1→2→3 的串行依赖，未就绪的页签显式标出，不再靠用户点进去试 */
+      var preReady = App.state.bureau.stage !== 'REVIEW';
       var tabs = [
         { key: 'direct', label: '合规扣分直填', step: 1, badge: '' },
-        { key: 'final', label: '终审与算分', step: 2, badge: App.state.bureau.stage === 'REVIEW' ? '!' : '' },
-        { key: 'review', label: '预发布复核与发布', step: 3, badge: '' },
+        { key: 'final', label: '终审与算分', step: 2, badge: preReady ? '' : '!', badgeTone: 'warn' },
+        { key: 'review', label: '预发布复核与发布', step: 3, badge: '', pending: !preReady,
+          tip: '前置步骤未完成：需先在【终审与算分】生成预发布版' },
         { key: 'audit', label: '修正审计日志', step: null, badge: String(App.state.audit.length) }
       ];
       var cur = App.state.govTab;
@@ -205,9 +211,12 @@
         '修正生效瞬间由引擎静默重算全局 21 家的得分、排名、定级与评语。</div></div>' +
         '</div>' +
         '<div class="govtabs">' + tabs.map(function (t) {
-          return '<button class="govtab' + (t.key === cur ? ' is-active' : '') + '" data-govtab="' + t.key + '">' +
+          return '<button class="govtab' + (t.key === cur ? ' is-active' : '') + (t.pending ? ' is-pending' : '') +
+            '" data-govtab="' + t.key + '"' + (t.tip ? ' title="' + U.esc(t.tip) + '"' : '') + '>' +
             (t.step ? '<span class="govtab__step">' + t.step + '</span>' : '') +
-            U.esc(t.label) + (t.badge ? '<span class="govtab__badge' + (isNaN(+t.badge) ? '' : ' govtab__badge--done') + '">' + t.badge + '</span>' : '') +
+            U.esc(t.label) + (t.badge ? '<span class="govtab__badge' +
+              (t.badgeTone ? ' govtab__badge--' + t.badgeTone : (isNaN(+t.badge) ? '' : ' govtab__badge--done')) +
+              '">' + t.badge + '</span>' : '') +
             '</button>';
         }).join('') + '</div>' +
         '<div id="govBody">' +
@@ -315,6 +324,14 @@
       Array.prototype.forEach.call(root.querySelectorAll('[data-fix]'), function (b) {
         b.addEventListener('click', function () { App.openCorrection(b.getAttribute('data-fix')); });
       });
+      /* --- Tab3 未就绪：直达前置步骤 --- */
+      var goFinal = root.querySelector('#goFinal');
+      if (goFinal) {
+        goFinal.addEventListener('click', function () {
+          App.state.govTab = 'final';
+          App.rerender();
+        });
+      }
       var pbAudit = root.querySelector('#pbAudit');
       if (pbAudit) {
         pbAudit.addEventListener('click', function () { App.state.govTab = 'audit'; App.rerender(); });

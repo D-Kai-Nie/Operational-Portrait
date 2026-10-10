@@ -191,3 +191,53 @@
 /* ---------- P2 #14 正常态状态标签（替代通栏横幅） ---------- */
 .pagehead__title .statetag{margin-left:var(--s2);vertical-align:3px}
 
+/* ============================================================
+   四项 P0 整改
+   ============================================================ */
+
+/* ---------- P0 #1 总览表：维度排名降级为内联角标
+   原「分数 + 第二行第N名」使行高翻倍、一屏仅见 7 家；
+   现改为分数主位 + 名次角标，行高回归单行，名次仍可读可扫 ---------- */
+.rankchip{
+  display:inline-flex;align-items:center;justify-content:center;
+  min-width:17px;height:15px;padding:0 4px;margin-left:5px;
+  border-radius:3px;font-size:12px;font-weight:400;line-height:1;
+  font-variant-numeric:tabular-nums;vertical-align:1px;
+  background:var(--bg-soft);border:1px solid var(--border);color:var(--t3);
+}
+.rankchip--lead{background:#FFF1F0;border-color:#FFA39E;color:#F5222D;font-weight:600}
+.rankchip--tail{background:#F6FFED;border-color:#B7EB8F;color:#52C41A;font-weight:600}
+/* 角标已用数字表达名次，去掉原有的 ▽ 冗余符号（仅作用于总览宽表） */
+.table--sticky td.cell--bot3::after{content:none}
+
+/* ---------- P0 #2 总览看点带（结论前置，替代「21 家自己找」） ---------- */
+.insightbar{
+  display:flex;align-items:center;gap:var(--s3);flex-wrap:wrap;
+  background:#fff;border:1px solid var(--border);border-radius:var(--r2);
+  box-shadow:var(--sh1);padding:10px var(--s4);margin-bottom:var(--s4);
+}
+.insightbar__label{
+  display:inline-flex;align-items:center;gap:5px;flex:0 0 auto;
+  padding-right:var(--s3);border-right:1px solid var(--border);
+  font-size:12px;font-weight:600;color:var(--t2);
+}
+.insightbar__item{display:inline-flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:12px;color:var(--t2)}
+.insightbar__item+.insightbar__item{padding-left:var(--s3);border-left:1px solid var(--border)}
+.insightbar__item b{font-weight:600;color:var(--t1)}
+.insightbar__item--alert b{color:var(--warning-deep)}
+.insightbar__val{color:var(--t3);font-variant-numeric:tabular-nums}
+.insightbar__units{display:inline-flex;gap:8px;flex-wrap:wrap}
+.insightbar__unit{color:var(--primary);cursor:pointer;white-space:nowrap}
+.insightbar__unit:hover{text-decoration:underline}
+.insightbar__unit i{
+  font-style:normal;margin-left:2px;color:var(--t3);font-size:11px;
+}
+
+/* ---------- P0 #5 治理页签：未就绪态（前置步骤未完成） ---------- */
+.govtab.is-pending{color:var(--t3)}
+.govtab.is-pending:hover{color:var(--t2)}
+.govtab.is-pending .govtab__step{
+  background:transparent;border:1px dashed var(--border-strong);color:var(--t3);
+}
+.govtab__badge--warn{background:var(--warning-deep)}
+

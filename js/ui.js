@@ -148,8 +148,11 @@ window.UI = (function () {
       '<div class="stat__value">' + o.value + (o.unit ? '<small>' + esc(o.unit) + '</small>' : '') + '</div>' +
       '<div class="stat__sub">' + (o.sub || '') + '</div></div>';
   }
-  function empty(text) {
-    return '<div class="empty"><div class="empty__icon">' + icon('info', 26) + '</div>' + esc(text) + '</div>';
+  /* action 可选：为空态补一个"怎么解除"的动作按钮（P0 #5） */
+  function empty(text, action) {
+    return '<div class="empty"><div class="empty__icon">' + icon('info', 26) + '</div>' +
+      '<div class="empty__text">' + esc(text) + '</div>' +
+      (action ? '<div class="empty__action">' + action + '</div>' : '') + '</div>';
   }
   function kv(pairs) {
     return '<dl class="kvlist">' + pairs.map(function (p) {

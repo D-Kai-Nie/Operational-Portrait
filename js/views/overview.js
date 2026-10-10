@@ -59,6 +59,49 @@
       '<div class="card__body">' + stack + list + '</div></div>';
   }
 
+  /* P0 #2：本期看点带 —— 结论前置，替代"21 家自己找"
+     数据全部由现有字段推导，不引入新口径。
+     判据说明：单看「≥1 项维度垫底」有 16/21 家命中，不具区分度；
+     故取「≥2 项维度垫底」作为偏科门槛。 */
+  function insightBar(units, dims) {
+    var WEAK_MIN = 2;
+    var scored = units.map(function (u) {
+      var weak = 0;
+      u.dimRanks.forEach(function (r) { if (r >= 19) { weak++; } });
+      return { u: u, weak: weak };
+    });
+    var lopsided = scored.filter(function (x) { return x.weak >= WEAK_MIN; })
+      .sort(function (a, b) { return b.weak - a.weak; });
+    var solid = scored.filter(function (x) { return x.weak === 0; }).length;
+
+    /* 各维度按满分归一化后横向比较，消除满分差异（15 分维度与 10 分维度不可直接比绝对值） */
+    var dimAvg = dims.map(function (d, i) {
+      var s = 0;
+      units.forEach(function (u) { s += u.dimScores[i]; });
+      return { name: d.name, avg: s / units.length, full: d.full, ratio: (s / units.length) / d.full };
+    });
+    var worst = dimAvg.slice().sort(function (a, b) { return a.ratio - b.ratio; })[0];
+
+    return '<div class="insightbar">' +
+      '<span class="insightbar__label">' + U.icon('info', 13) + '本期看点</span>' +
+      '<div class="insightbar__item insightbar__item--alert"' +
+        ' title="存在 ' + WEAK_MIN + ' 项及以上维度排名进入局内后 3 名的单位">' +
+        '<span>偏科单位</span><b>' + lopsided.length + ' 家</b>' +
+        '<span class="insightbar__units">' + lopsided.slice(0, 4).map(function (x) {
+          return '<a class="insightbar__unit" data-unit="' + x.u.id + '" title="查看 ' + U.esc(x.u.name) +
+            ' 画像 · ' + x.weak + ' 项维度垫底">' + U.esc(x.u.name) + '<i>' + x.weak + '</i></a>';
+        }).join('') + (lopsided.length > 4 ? '<span class="muted">等</span>' : '') + '</span>' +
+      '</div>' +
+      '<div class="insightbar__item">' +
+        '<span>八维度无垫底</span><b>' + solid + ' 家</b>' +
+      '</div>' +
+      '<div class="insightbar__item" title="各维度得分按满分归一化后，21 家均值最低的一项">' +
+        '<span>全局最短板</span><b>' + U.esc(worst.name) + '</b>' +
+        '<span class="insightbar__val">' + U.num(worst.avg) + ' / ' + worst.full + '</span>' +
+      '</div>' +
+      '</div>';
+  }
+
   function table(units, dims, sort, filter) {
     filter = filter || {};
     var list = units.slice();
@@ -102,8 +145,12 @@
         '<td class="ctr">' + U.gradeTag(u.grade) + '</td>' +
         dims.map(function (d, i) {
           var r = u.dimRanks[i];
-          var c = r <= 3 ? ' cell--top3' : (r >= 19 ? ' cell--bot3' : '');
-          return '<td class="num' + c + '">' + U.num(u.dimScores[i]) + '<span class="cell__sub">第' + r + '名</span></td>';
+          var lead = r <= 3, tail = r >= 19;
+          var c = lead ? ' cell--top3' : (tail ? ' cell--bot3' : '');
+          /* P0 #1：排名由第二行降级为内联角标，分数保持主位，行高不再翻倍 */
+          var chip = '<span class="rankchip' + (lead ? ' rankchip--lead' : (tail ? ' rankchip--tail' : '')) +
+            '" title="' + U.esc(d.name) + ' · 局内第 ' + r + ' 名">' + r + '</span>';
+          return '<td class="num' + c + '">' + U.num(u.dimScores[i]) + chip + '</td>';
         }).join('') +
         '<td class="ctr"><button class="btn--link" data-unit="' + u.id + '">查看画像</button></td></tr>';
     }).join('');
@@ -112,7 +159,7 @@
     var sortLabel = sortNames[sort.key] || (dims[+sort.key] ? dims[+sort.key].name : '排名');
     return '<div class="card"><div class="card__head">' +
       '<span class="card__title">主业单位画像排名总览' +
-      '<span class="card__note">表头可点击排序 · 前三名奖牌 · 后三名▼预警</span></span>' +
+      '<span class="card__note">表头可点击排序 · 前三名奖牌 · 维度格内角标为局内名次</span></span>' +
       '<div class="filterbar">' +
         '<span class="searchbox">' + U.icon('search', 13) +
           '<input class="input" id="ovKw" placeholder="搜索单位名称" value="' + U.esc(kw) + '"></span>' +
@@ -166,6 +213,7 @@
         '</div></div>' +
         statusBanner(App) +
         statRow(units, dims) +
+        insightBar(units, dims) +
         /* 主体：主业单位画像排名总览（含排名 / 总分 / 定级 / 8 维度，可排序） */
         table(units, dims, App.state.ovSort, { kw: App.state.filterKw, grade: App.state.filterGrade }) +
         /* 页面底部：五级定级分布（整行满宽） */

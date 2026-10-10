@@ -42,7 +42,7 @@
     });
     return '<div class="card"><div class="card__head">' +
       '<span class="card__title">指标字典 · 15 项计分指标 + 1 项展示指标 + 2 项定性支撑' +
-      '<span class="card__note">按维度分组 · 公式与扣减系数固化于算分引擎底层，配置变更须走系统审批并留痕</span></span>' +
+      '<span class="card__note">按维度分组 · 公式与扣减系数固化于算分引擎底层，本页为只读展示</span></span>' +
       '<div class="inline">' +
       '<span class="tag ' + (weightSum === 100 ? 'tag--green' : 'tag--red') + '">Σ 权重 = ' + weightSum + ' 分' + (weightSum === 100 ? '（校验通过）' : '（校验失败）') + '</span>' +
       '<span class="chip">8 大维度</span></div></div>' +
@@ -54,7 +54,7 @@
 
   function algorithmCard() {
     return '<div class="card"><div class="card__head"><span class="card__title">算分算法与排名规则' +
-      '<span class="card__note">PRD §8.2 / §8.3 / §8.4</span></span></div><div class="card__body">' +
+      '<span class="card__note">四类计分方式的公式口径</span></span></div><div class="card__body">' +
       '<div class="grid2">' +
       '<div><div class="stack stack--sm">' +
       '<div><b>阶梯排名扣分法（正向优）</b><div class="formula mt2">得分 = MIN(满分, 满分 − (名次−1) × 步长)</div>' +
@@ -91,9 +91,9 @@
     title: '指标字典',
     render: function () {
       return '<div class="pagehead">' +
-        '<div><div class="pagehead__title">指标字典与口径配置</div>' +
-        '<div class="pagehead__desc">口径即配置：15 项计分指标的权重、方向、得分公式、扣减步长、单位、数据源与采集方式集中维护，' +
-        '作为算分引擎与看板展示的唯一事实源；Σ 权重必须等于 100，否则阻断保存。</div></div>' +
+        '<div><div class="pagehead__title">指标字典</div>' +
+        '<div class="pagehead__desc">口径的唯一事实源：15 项计分指标的权重、方向、得分公式、扣减步长、单位、数据源与采集方式集中沉淀，' +
+        '算分引擎与看板展示均以此为准，Σ 权重恒等于 100。口径如需调整，由系统管理员在配置台变更并留痕，本页同步展示当前生效口径。</div></div>' +
         '</div>' +
         dictTable() +
         '<div class="grid2">' + algorithmCard() + versionCard() + '</div>';
